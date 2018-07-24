@@ -9,16 +9,24 @@ import {BikeService} from "./services/bike.service";
 import {AdminComponent} from './components/admin/admin.component';
 import {HomeComponent} from './components/home/home.component';
 import {ViewRegistrationComponent} from './components/view-registration/view-registration.component';
+import {CallbackComponent} from './components/callback/callback.component';
+import {AuthService} from "./services/auth.service";
+import {AuthGuard} from "./services/auth.guard";
 
 const routes: Routes = [{
   path: '',
   component: HomeComponent
 }, {
   path: 'admin/view/:id',
-  component: ViewRegistrationComponent
+  component: ViewRegistrationComponent,
+  canActivate: [AuthGuard]
 }, {
   path: 'admin',
-  component: AdminComponent
+  component: AdminComponent,
+  canActivate: [AuthGuard]
+}, {
+  path: 'callback',
+  component: CallbackComponent
 }]
 
 @NgModule({
@@ -26,7 +34,8 @@ const routes: Routes = [{
     AppComponent,
     AdminComponent,
     HomeComponent,
-    ViewRegistrationComponent
+    ViewRegistrationComponent,
+    CallbackComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -34,7 +43,7 @@ const routes: Routes = [{
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [BikeService],
+  providers: [BikeService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
